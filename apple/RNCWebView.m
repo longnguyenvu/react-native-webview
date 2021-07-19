@@ -1184,6 +1184,15 @@ static NSDictionary* customCertificatesForHost;
   if (request.URL && !_webView.URL.absoluteString.length) {
     [_webView loadRequest:request];
   } else {
+    NSString *html = [RCTConvert NSString:_source[@"html"]];
+    if (html) {
+        NSURL *baseURL = [RCTConvert NSURL:_source[@"baseUrl"]];
+        if (!baseURL) {
+            baseURL = [NSURL URLWithString:@"about:blank"];
+        }
+        [_webView loadHTMLString:html baseURL:baseURL];
+        return;
+    } 
     [_webView reload];
   }
 }
